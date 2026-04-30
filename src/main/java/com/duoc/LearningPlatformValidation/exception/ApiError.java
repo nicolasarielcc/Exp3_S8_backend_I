@@ -1,4 +1,4 @@
-package main.java.com.duoc.LearningPlatformValidation.exception;
+package com.duoc.LearningPlatformValidation.exception;
 
 public class ApiError {
 

@@ -1,5 +1,8 @@
 # LearningPlatformValidation
 
+**Para correr el proyecto**
+> export $(cat .env | xargs) && ./mvnw spring-boot:run
+
 ## Estructura del Proyecto
 
 Este proyecto implementa una plataforma de aprendizaje en línea utilizando Spring Boot, siguiendo buenas prácticas de arquitectura y separación de responsabilidades. La estructura de carpetas está diseñada para facilitar el mantenimiento, la escalabilidad y la claridad del código.

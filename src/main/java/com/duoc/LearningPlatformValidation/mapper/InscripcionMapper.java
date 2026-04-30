@@ -1,4 +1,4 @@
-package com.duoc.LearningPlatformValidation.mapper;
+package main.java.com.duoc.LearningPlatformValidation.mapper;
 
 public class InscripcionMapper {
 

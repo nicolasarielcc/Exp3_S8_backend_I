@@ -1,4 +1,4 @@
-package com.duoc.LearningPlatformValidation.repository;
+package main.java.com.duoc.LearningPlatformValidation.repository;
 
 public class CursoRepository {
 

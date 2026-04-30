@@ -1,4 +1,4 @@
-package com.duoc.LearningPlatformValidation.model;
+
 
 import jakarta.persistence.*;
 import lombok.*;

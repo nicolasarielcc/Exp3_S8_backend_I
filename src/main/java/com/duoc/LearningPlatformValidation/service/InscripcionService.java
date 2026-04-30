@@ -1,4 +1,4 @@
-package com.duoc.LearningPlatformValidation.service;
+package main.java.com.duoc.LearningPlatformValidation.service;
 
 public class InscripcionService {
 

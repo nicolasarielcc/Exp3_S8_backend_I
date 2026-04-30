@@ -13,8 +13,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>LearningPlatformValidation</name>
 	<description>Validación de Plataforma de Aprendizaje en Línea</description>
-	<pachagename>com.duoc.learningplatformvalidation</pachagename>
-	<packing>jar</packing>
+	<packaging>jar</packaging>
 	<url/>
 	<licenses>
 		<license/>

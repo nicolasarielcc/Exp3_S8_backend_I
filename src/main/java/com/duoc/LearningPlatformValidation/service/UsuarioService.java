@@ -1,51 +1,39 @@
 package com.duoc.LearningPlatformValidation.service;
-
+import com.duoc.LearningPlatformValidation.dto.usuario.*;
+import com.duoc.LearningPlatformValidation.mapper.UsuarioMapper;
 import com.duoc.LearningPlatformValidation.model.UsuarioEntity;
 import com.duoc.LearningPlatformValidation.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
+    @Autowired private UsuarioRepository repository;
+    @Autowired private UsuarioMapper mapper;
 
-    @Autowired
-    private UsuarioRepository repository;
-
-    // GET: Consultar todos los usuarios
-    public List<UsuarioEntity> obtenerTodos() {
-        return repository.findAll();
+    public List<UsuarioResponse> obtenerTodos() {
+        return repository.findAll().stream().map(mapper::toResponse).collect(Collectors.toList());
     }
-
-    // GET: Buscar usuario por ID
-    public Optional<UsuarioEntity> obtenerPorId(Long id) {
-        return repository.findById(id);
+    public Optional<UsuarioResponse> obtenerPorId(Long id) {
+        return repository.findById(id).map(mapper::toResponse);
     }
-
-    // POST: Registrar usuario
-    public UsuarioEntity crear(UsuarioEntity usuario) {
-        return repository.save(usuario);
+    public UsuarioResponse crear(UsuarioRequest request) {
+        return mapper.toResponse(repository.save(mapper.toEntity(request)));
     }
-
-    // PUT: Actualizar usuario
-    public Optional<UsuarioEntity> actualizar(Long id, UsuarioEntity detallesActualizados) {
-        return repository.findById(id).map(usuarioExistente -> {
-            usuarioExistente.setNombre(detallesActualizados.getNombre());
-            usuarioExistente.setCorreo(detallesActualizados.getCorreo());
-            usuarioExistente.setContrasena(detallesActualizados.getContrasena());
-            usuarioExistente.setRol(detallesActualizados.getRol());
-            return repository.save(usuarioExistente);
+    public Optional<UsuarioResponse> actualizar(Long id, UsuarioRequest request) {
+        return repository.findById(id).map(u -> {
+            u.setNombre(request.getNombre());
+            u.setCorreo(request.getCorreo());
+            if(request.getContrasena() != null && !request.getContrasena().isEmpty()) { u.setContrasena(request.getContrasena()); }
+            u.setRol(request.getRol());
+            return mapper.toResponse(repository.save(u));
         });
     }
-
-    // DELETE: Eliminar usuario
     public boolean eliminar(Long id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
-            return true;
-        }
+        if (repository.existsById(id)) { repository.deleteById(id); return true; }
         return false;
     }
 }

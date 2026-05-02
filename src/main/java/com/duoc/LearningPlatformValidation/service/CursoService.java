@@ -1,26 +1,33 @@
 package com.duoc.LearningPlatformValidation.service;
-
-import java.util.List;
-import java.util.Optional;
-
+import com.duoc.LearningPlatformValidation.dto.curso.*;
+import com.duoc.LearningPlatformValidation.mapper.CursoMapper;
+import com.duoc.LearningPlatformValidation.repository.CursoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.duoc.LearningPlatformValidation.model.CursoEntity;
-import com.duoc.LearningPlatformValidation.repository.CursoRepository;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CursoService {
     @Autowired private CursoRepository repository;
-    public List<CursoEntity> obtenerTodos() { return repository.findAll(); }
-    public Optional<CursoEntity> obtenerPorId(Long id) { return repository.findById(id); }
-    public CursoEntity crear(CursoEntity curso) { return repository.save(curso); }
-    public Optional<CursoEntity> actualizar(Long id, CursoEntity d) {
+    @Autowired private CursoMapper mapper;
+
+    public List<CursoResponse> obtenerTodos() {
+        return repository.findAll().stream().map(mapper::toResponse).collect(Collectors.toList());
+    }
+    public Optional<CursoResponse> obtenerPorId(Long id) {
+        return repository.findById(id).map(mapper::toResponse);
+    }
+    public CursoResponse crear(CursoRequest request) {
+        return mapper.toResponse(repository.save(mapper.toEntity(request)));
+    }
+    public Optional<CursoResponse> actualizar(Long id, CursoRequest request) {
         return repository.findById(id).map(c -> {
-            c.setNombre(d.getNombre());
-            c.setDescripcion(d.getDescripcion());
-            c.setProfesorId(d.getProfesorId());
-            return repository.save(c);
+            c.setNombre(request.getNombre());
+            c.setDescripcion(request.getDescripcion());
+            c.setProfesorId(request.getProfesorId());
+            return mapper.toResponse(repository.save(c));
         });
     }
     public boolean eliminar(Long id) {

@@ -1,26 +1,33 @@
 package com.duoc.LearningPlatformValidation.service;
-
-import java.util.List;
-import java.util.Optional;
-
+import com.duoc.LearningPlatformValidation.dto.evaluacion.*;
+import com.duoc.LearningPlatformValidation.mapper.EvaluacionMapper;
+import com.duoc.LearningPlatformValidation.repository.EvaluacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.duoc.LearningPlatformValidation.model.EvaluacionEntity;
-import com.duoc.LearningPlatformValidation.repository.EvaluacionRepository;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EvaluacionService {
     @Autowired private EvaluacionRepository repository;
-    public List<EvaluacionEntity> obtenerTodas() { return repository.findAll(); }
-    public List<EvaluacionEntity> listarPorCurso(Long cursoId) { return repository.findByCursoId(cursoId); }
-    public EvaluacionEntity registrar(EvaluacionEntity e) { return repository.save(e); }
-    public Optional<EvaluacionEntity> actualizar(Long id, EvaluacionEntity d) {
+    @Autowired private EvaluacionMapper mapper;
+
+    public List<EvaluacionResponse> obtenerTodas() {
+        return repository.findAll().stream().map(mapper::toResponse).collect(Collectors.toList());
+    }
+    public List<EvaluacionResponse> listarPorCurso(Long cursoId) {
+        return repository.findByCursoId(cursoId).stream().map(mapper::toResponse).collect(Collectors.toList());
+    }
+    public EvaluacionResponse registrar(EvaluacionRequest request) {
+        return mapper.toResponse(repository.save(mapper.toEntity(request)));
+    }
+    public Optional<EvaluacionResponse> actualizar(Long id, EvaluacionRequest request) {
         return repository.findById(id).map(e -> {
-            e.setNombre(d.getNombre());
-            e.setPuntajeMaximo(d.getPuntajeMaximo());
-            e.setFechaAplicacion(d.getFechaAplicacion());
-            return repository.save(e);
+            e.setNombre(request.getNombre());
+            e.setPuntajeMaximo(request.getPuntajeMaximo());
+            e.setFechaAplicacion(request.getFechaAplicacion());
+            return mapper.toResponse(repository.save(e));
         });
     }
 }

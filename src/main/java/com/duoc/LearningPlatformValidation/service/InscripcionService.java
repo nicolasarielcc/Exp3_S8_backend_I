@@ -13,11 +13,14 @@ public class InscripcionService {
     @Autowired private InscripcionMapper mapper;
 
     public List<InscripcionResponse> listarPorCurso(Long cursoId) {
+        // GET: Obtener todas las inscripciones de un curso y mapear a respuestas
         return repository.findByCursoId(cursoId).stream().map(mapper::toResponse).collect(Collectors.toList());
     }
+    // POST: Crear una nueva inscripción, devuelve la inscripción creada con ID
     public InscripcionResponse registrar(InscripcionRequest request) {
         return mapper.toResponse(repository.save(mapper.toEntity(request)));
     }
+    // DELETE: Eliminar una inscripción por ID, devuelve true si se eliminó, false si no existe
     public boolean eliminar(Long id) {
         if (repository.existsById(id)) { repository.deleteById(id); return true; }
         return false;

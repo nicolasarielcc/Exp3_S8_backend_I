@@ -14,14 +14,18 @@ public class EvaluacionService {
     @Autowired private EvaluacionMapper mapper;
 
     public List<EvaluacionResponse> obtenerTodas() {
+        // GET: Obtener todas las evaluaciones y mapear a respuestas
         return repository.findAll().stream().map(mapper::toResponse).collect(Collectors.toList());
     }
+    // GET: Obtener una evaluación por ID, devuelve Optional.empty() si no existe
     public List<EvaluacionResponse> listarPorCurso(Long cursoId) {
         return repository.findByCursoId(cursoId).stream().map(mapper::toResponse).collect(Collectors.toList());
     }
+    // POST: Crear una nueva evaluación, devuelve la evaluación creada con ID
     public EvaluacionResponse registrar(EvaluacionRequest request) {
         return mapper.toResponse(repository.save(mapper.toEntity(request)));
     }
+    // PUT: Actualizar una evaluación por ID, devuelve Optional.empty() si no existe
     public Optional<EvaluacionResponse> actualizar(Long id, EvaluacionRequest request) {
         return repository.findById(id).map(e -> {
             e.setNombre(request.getNombre());

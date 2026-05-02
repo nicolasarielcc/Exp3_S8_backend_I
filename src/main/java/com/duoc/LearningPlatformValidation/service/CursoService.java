@@ -14,14 +14,18 @@ public class CursoService {
     @Autowired private CursoMapper mapper;
 
     public List<CursoResponse> obtenerTodos() {
+        // GET: Obtener todos los cursos y mapear a respuestas
         return repository.findAll().stream().map(mapper::toResponse).collect(Collectors.toList());
     }
+    // GET: Obtener un curso por ID, devuelve Optional.empty() si no existe
     public Optional<CursoResponse> obtenerPorId(Long id) {
         return repository.findById(id).map(mapper::toResponse);
     }
+    // POST: Crear un nuevo curso, devuelve el curso creado con ID
     public CursoResponse crear(CursoRequest request) {
         return mapper.toResponse(repository.save(mapper.toEntity(request)));
     }
+    // PUT: Actualizar un curso por ID, devuelve Optional.empty() si no existe
     public Optional<CursoResponse> actualizar(Long id, CursoRequest request) {
         return repository.findById(id).map(c -> {
             c.setNombre(request.getNombre());
@@ -30,6 +34,7 @@ public class CursoService {
             return mapper.toResponse(repository.save(c));
         });
     }
+    // DELETE: Eliminar un curso por ID, devuelve true si se eliminó, false si no existe
     public boolean eliminar(Long id) {
         if (repository.existsById(id)) { repository.deleteById(id); return true; }
         return false;

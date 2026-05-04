@@ -1,7 +1,25 @@
 # LearningPlatformValidation
 
-**Para correr el proyecto**
-> export $(cat .env | xargs) && ./mvnw spring-boot:run
+Plataforma de aprendizaje en linea construida con Spring Boot. Incluye CRUD de usuarios y cursos, inscripciones por curso y registro de evaluaciones.
+
+## Requisitos
+
+- Java 17 o superior
+- Maven Wrapper (incluido en el repositorio)
+- Base de datos configurada en `application.properties`
+
+## Configuracion
+
+1) Crea un archivo `.env` con las variables necesarias para la conexion a la base de datos.
+2) Verifica los valores en `src/main/resources/application.properties`.
+
+## Ejecucion
+
+En Git Bash:
+
+```
+set -a; source .env; set +a && ./mvnw spring-boot:run
+```
 
 ## Estructura del Proyecto
 
@@ -111,6 +129,18 @@ Cada modelo tiene su respectivo repositorio JPA, servicio para la lógica de neg
 - La conexión a la base de datos está configurada en `application.properties` (ajustada para Oracle).
 - Todos los servicios CRUD se validan mediante pruebas en Postman, documentando los resultados de cada endpoint.
 - Se recomienda capturar y documentar cada prueba para la presentación final.
+
+### Coleccion de Postman
+
+Se incluye una coleccion con los endpoints solicitados en:
+
+- [postman/LearningPlatformValidation.postman_collection.json](postman/LearningPlatformValidation.postman_collection.json)
+
+Variables sugeridas dentro de la coleccion:
+
+- `baseUrl`: `http://localhost:8080`
+- `usuarioId`: ID de un usuario existente
+- `cursoId`: ID de un curso existente
 
 ---
 

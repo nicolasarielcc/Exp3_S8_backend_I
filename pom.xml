@@ -29,6 +29,7 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		<ojdbc.version>23.5.0.24.07</ojdbc.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -51,6 +52,7 @@
 		<dependency>
 			<groupId>com.oracle.database.jdbc</groupId>
 			<artifactId>ojdbc11</artifactId>
+			<version>${ojdbc.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>

@@ -16,6 +16,8 @@ public class UsuarioResponse {
 
 	private String correo;
 
+	private String contrasena;
+
 	private String rol;
 
 }

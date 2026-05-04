@@ -50,10 +50,10 @@ src/
               InscripcionRepository.java
               EvaluacionRepository.java
             model/
-              Usuario.java
-              Curso.java
-              Inscripcion.java
-              Evaluacion.java
+              UsuarioEntity.java
+              CursoEntity.java
+              InscripcionEntity.java
+              EvaluacionEntity.java
             dto/
               usuario/
                 UsuarioRequest.java
@@ -82,7 +82,7 @@ src/
       com/
         duoc/
           LearningPlatformValidation/
-            // Pruebas unitarias e integración
+            LearningPlatformValidationApplicationTests.java
 ```
 
 ---
@@ -95,6 +95,73 @@ src/
 - **Evaluacion:** ID, CursoID, Nombre, PuntajeMaximo, FechaAplicacion
 
 Cada modelo tiene su respectivo repositorio JPA, servicio para la lógica de negocio, DTOs para entrada/salida de datos, mappers para conversión entre entidades y DTOs, y controladores REST.
+
+---
+
+## Descripcion de Capas y Clases
+
+### Aplicacion
+
+- `LearningPlatformValidationApplication`: clase principal que arranca el contexto de Spring Boot.
+
+### Controller
+
+- `UsuarioController`: expone CRUD de usuarios en `/api/usuarios`.
+- `CursoController`: expone CRUD de cursos en `/api/cursos`.
+- `InscripcionController`: expone inscripciones por curso y registro de inscripcion en `/api/inscripciones`.
+- `EvaluacionController`: lista evaluaciones, lista por curso y registra/actualiza evaluaciones en `/api/evaluaciones`.
+
+### Service
+
+- `UsuarioService`: orquesta CRUD de usuarios, valida existencia y usa `UsuarioMapper`.
+- `CursoService`: orquesta CRUD de cursos, valida existencia y usa `CursoMapper`.
+- `InscripcionService`: registra y elimina inscripciones, lista por curso.
+- `EvaluacionService`: registra/actualiza evaluaciones y lista por curso o todas.
+
+### Repository
+
+- `UsuarioRepository`: acceso JPA para `UsuarioEntity`.
+- `CursoRepository`: acceso JPA para `CursoEntity`.
+- `InscripcionRepository`: acceso JPA para `InscripcionEntity` con `findByCursoId`.
+- `EvaluacionRepository`: acceso JPA para `EvaluacionEntity` con `findByCursoId`.
+
+### Model (Entities)
+
+- `UsuarioEntity`: entidad `usuarios` con `id`, `nombre`, `correo` unico, `contrasena`, `rol`.
+- `CursoEntity`: entidad `cursos` con `id`, `nombre`, `descripcion`, `profesorId`.
+- `InscripcionEntity`: entidad `inscripciones` con `id`, `cursoId`, `estudianteId`, `fechaInscripcion`.
+- `EvaluacionEntity`: entidad `evaluaciones` con `id`, `cursoId`, `nombre`, `puntajeMaximo`, `fechaAplicacion`.
+
+### DTO Request
+
+- `UsuarioRequest`: datos de entrada para crear/actualizar usuarios.
+- `CursoRequest`: datos de entrada para crear/actualizar cursos.
+- `InscripcionRequest`: datos de entrada para registrar una inscripcion.
+- `EvaluacionRequest`: datos de entrada para registrar/actualizar evaluaciones.
+
+### DTO Response
+
+- `UsuarioResponse`: datos de salida de usuarios, incluye `contrasena` para fines academicos.
+- `CursoResponse`: datos de salida de cursos.
+- `InscripcionResponse`: datos de salida de inscripciones.
+- `EvaluacionResponse`: datos de salida de evaluaciones.
+
+### Mapper
+
+- `UsuarioMapper`: convierte `UsuarioRequest` a `UsuarioEntity` y `UsuarioEntity` a `UsuarioResponse`.
+- `CursoMapper`: convierte `CursoRequest` a `CursoEntity` y `CursoEntity` a `CursoResponse`.
+- `InscripcionMapper`: convierte `InscripcionRequest` a `InscripcionEntity` y `InscripcionEntity` a `InscripcionResponse`.
+- `EvaluacionMapper`: convierte `EvaluacionRequest` a `EvaluacionEntity` y `EvaluacionEntity` a `EvaluacionResponse`.
+
+### Exception
+
+- `ApiError`: modelo de error estandar con `timestamp`, `status`, `error`, `message`, `path`.
+- `ApiExceptionHandler`: maneja errores globales y devuelve respuestas JSON uniformes.
+- `ResourceNotFoundException`: excepcion para recursos no encontrados (404).
+
+### Tests
+
+- `LearningPlatformValidationApplicationTests`: verifica que el contexto de Spring carga correctamente.
 
 ---
 

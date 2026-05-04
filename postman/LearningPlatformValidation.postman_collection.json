@@ -1,116 +1,102 @@
 {
   "info": {
     "name": "LearningPlatformValidation",
-    "_postman_id": "a7b6e6f0-1a2b-4b0a-8c2a-0f1b0b1a2c3d",
-    "description": "Coleccion de pruebas para endpoints principales.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
-      "name": "Usuarios",
-      "item": [
-        {
-          "name": "Listar usuarios",
-          "request": {
-            "method": "GET",
-            "url": "{{baseUrl}}/api/usuarios"
-          }
-        },
-        {
-          "name": "Buscar usuario por ID",
-          "request": {
-            "method": "GET",
-            "url": "{{baseUrl}}/api/usuarios/{{usuarioId}}"
-          }
-        },
-        {
-          "name": "Registrar usuario",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"nombre\": \"Juan Perez\",\n  \"correo\": \"juan.perez@example.com\",\n  \"contrasena\": \"secreto123\",\n  \"rol\": \"estudiante\"\n}"
-            },
-            "url": "{{baseUrl}}/api/usuarios"
-          }
-        },
-        {
-          "name": "Actualizar usuario",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"nombre\": \"Juan Perez\",\n  \"correo\": \"juan.actualizado@example.com\",\n  \"contrasena\": \"secreto123\",\n  \"rol\": \"estudiante\"\n}"
-            },
-            "url": "{{baseUrl}}/api/usuarios/{{usuarioId}}"
-          }
-        },
-        {
-          "name": "Eliminar usuario",
-          "request": {
-            "method": "DELETE",
-            "url": "{{baseUrl}}/api/usuarios/{{usuarioId}}"
-          }
-        }
-      ]
+      "name": "Listar usuarios",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/usuarios"
+      },
+      "response": []
     },
     {
-      "name": "Cursos",
-      "item": [
-        {
-          "name": "Listar cursos",
-          "request": {
-            "method": "GET",
-            "url": "{{baseUrl}}/api/cursos"
-          }
-        }
-      ]
+      "name": "Buscar usuario por ID",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/usuarios/{{usuarioId}}"
+      },
+      "response": []
     },
     {
-      "name": "Inscripciones",
-      "item": [
-        {
-          "name": "Listar inscripciones por curso",
-          "request": {
-            "method": "GET",
-            "url": "{{baseUrl}}/api/inscripciones/curso/{{cursoId}}"
+      "name": "Registrar usuario",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
           }
-        }
-      ]
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Juan Perez\",\n  \"correo\": \"juan.perez@example.com\",\n  \"contrasena\": \"secreto123\",\n  \"rol\": \"estudiante\"\n}"
+        },
+        "url": "{{baseUrl}}/api/usuarios"
+      },
+      "response": []
     },
     {
-      "name": "Evaluaciones",
-      "item": [
-        {
-          "name": "Registrar evaluacion",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"cursoId\": 1,\n  \"nombre\": \"Prueba 1\",\n  \"puntajeMaximo\": 100,\n  \"fechaAplicacion\": \"2024-01-15T00:00:00.000+00:00\"\n}"
-            },
-            "url": "{{baseUrl}}/api/evaluaciones"
+      "name": "Actualizar usuario",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
           }
-        }
-      ]
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Juan Perez\",\n  \"correo\": \"juan.actualizado@example.com\",\n  \"contrasena\": \"secreto123\",\n  \"rol\": \"estudiante\"\n}"
+        },
+        "url": "{{baseUrl}}/api/usuarios/{{usuarioId}}"
+      },
+      "response": []
+    },
+    {
+      "name": "Eliminar usuario",
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/api/usuarios/{{usuarioId}}"
+      },
+      "response": []
+    },
+    {
+      "name": "Listar cursos",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/cursos"
+      },
+      "response": []
+    },
+    {
+      "name": "Listar inscripciones por curso",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/inscripciones/curso/{{cursoId}}"
+      },
+      "response": []
+    },
+    {
+      "name": "Registrar evaluacion",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"cursoId\": 1,\n  \"nombre\": \"Prueba 1\",\n  \"puntajeMaximo\": 100,\n  \"fechaAplicacion\": \"2024-01-15T00:00:00.000+00:00\"\n}"
+        },
+        "url": "{{baseUrl}}/api/evaluaciones"
+      },
+      "response": []
     }
   ],
   "variable": [

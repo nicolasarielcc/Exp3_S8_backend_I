@@ -23,6 +23,6 @@ public class EvaluacionController {
     }
     // PUT: Actualizar una evaluación por ID, devuelve 200 OK con la evaluación actualizada o 404 Not Found si no existe
     @PutMapping("/{id}") public ResponseEntity<EvaluacionResponse> update(@PathVariable Long id, @RequestBody EvaluacionRequest request) {
-        return service.actualizar(id, request).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(service.actualizar(id, request));
     }
 }

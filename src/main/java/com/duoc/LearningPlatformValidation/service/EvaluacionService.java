@@ -1,11 +1,12 @@
 package com.duoc.LearningPlatformValidation.service;
 import com.duoc.LearningPlatformValidation.dto.evaluacion.*;
+import com.duoc.LearningPlatformValidation.exception.ResourceNotFoundException;
 import com.duoc.LearningPlatformValidation.mapper.EvaluacionMapper;
+import com.duoc.LearningPlatformValidation.model.EvaluacionEntity;
 import com.duoc.LearningPlatformValidation.repository.EvaluacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,12 +27,12 @@ public class EvaluacionService {
         return mapper.toResponse(repository.save(mapper.toEntity(request)));
     }
     // PUT: Actualizar una evaluación por ID, devuelve Optional.empty() si no existe
-    public Optional<EvaluacionResponse> actualizar(Long id, EvaluacionRequest request) {
-        return repository.findById(id).map(e -> {
-            e.setNombre(request.getNombre());
-            e.setPuntajeMaximo(request.getPuntajeMaximo());
-            e.setFechaAplicacion(request.getFechaAplicacion());
-            return mapper.toResponse(repository.save(e));
-        });
+    public EvaluacionResponse actualizar(Long id, EvaluacionRequest request) {
+        EvaluacionEntity entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Evaluacion no encontrada: " + id));
+        entity.setNombre(request.getNombre());
+        entity.setPuntajeMaximo(request.getPuntajeMaximo());
+        entity.setFechaAplicacion(request.getFechaAplicacion());
+        return mapper.toResponse(repository.save(entity));
     }
 }

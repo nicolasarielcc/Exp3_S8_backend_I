@@ -1,11 +1,12 @@
 package com.duoc.LearningPlatformValidation.service;
 import com.duoc.LearningPlatformValidation.dto.curso.*;
+import com.duoc.LearningPlatformValidation.exception.ResourceNotFoundException;
 import com.duoc.LearningPlatformValidation.mapper.CursoMapper;
+import com.duoc.LearningPlatformValidation.model.CursoEntity;
 import com.duoc.LearningPlatformValidation.repository.CursoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,25 +19,29 @@ public class CursoService {
         return repository.findAll().stream().map(mapper::toResponse).collect(Collectors.toList());
     }
     // GET: Obtener un curso por ID, devuelve Optional.empty() si no existe
-    public Optional<CursoResponse> obtenerPorId(Long id) {
-        return repository.findById(id).map(mapper::toResponse);
+    public CursoResponse obtenerPorId(Long id) {
+        CursoEntity entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Curso no encontrado: " + id));
+        return mapper.toResponse(entity);
     }
     // POST: Crear un nuevo curso, devuelve el curso creado con ID
     public CursoResponse crear(CursoRequest request) {
         return mapper.toResponse(repository.save(mapper.toEntity(request)));
     }
     // PUT: Actualizar un curso por ID, devuelve Optional.empty() si no existe
-    public Optional<CursoResponse> actualizar(Long id, CursoRequest request) {
-        return repository.findById(id).map(c -> {
-            c.setNombre(request.getNombre());
-            c.setDescripcion(request.getDescripcion());
-            c.setProfesorId(request.getProfesorId());
-            return mapper.toResponse(repository.save(c));
-        });
+    public CursoResponse actualizar(Long id, CursoRequest request) {
+        CursoEntity entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Curso no encontrado: " + id));
+        entity.setNombre(request.getNombre());
+        entity.setDescripcion(request.getDescripcion());
+        entity.setProfesorId(request.getProfesorId());
+        return mapper.toResponse(repository.save(entity));
     }
     // DELETE: Eliminar un curso por ID, devuelve true si se eliminó, false si no existe
-    public boolean eliminar(Long id) {
-        if (repository.existsById(id)) { repository.deleteById(id); return true; }
-        return false;
+    public void eliminar(Long id) {
+        if (!repository.existsById(id)) {
+            throw new ResourceNotFoundException("Curso no encontrado: " + id);
+        }
+        repository.deleteById(id);
     }
 }

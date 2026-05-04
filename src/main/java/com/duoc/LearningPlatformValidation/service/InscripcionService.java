@@ -1,5 +1,6 @@
 package com.duoc.LearningPlatformValidation.service;
 import com.duoc.LearningPlatformValidation.dto.inscripcion.*;
+import com.duoc.LearningPlatformValidation.exception.ResourceNotFoundException;
 import com.duoc.LearningPlatformValidation.mapper.InscripcionMapper;
 import com.duoc.LearningPlatformValidation.repository.InscripcionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,10 @@ public class InscripcionService {
         return mapper.toResponse(repository.save(mapper.toEntity(request)));
     }
     // DELETE: Eliminar una inscripción por ID, devuelve true si se eliminó, false si no existe
-    public boolean eliminar(Long id) {
-        if (repository.existsById(id)) { repository.deleteById(id); return true; }
-        return false;
+    public void eliminar(Long id) {
+        if (!repository.existsById(id)) {
+            throw new ResourceNotFoundException("Inscripcion no encontrada: " + id);
+        }
+        repository.deleteById(id);
     }
 }

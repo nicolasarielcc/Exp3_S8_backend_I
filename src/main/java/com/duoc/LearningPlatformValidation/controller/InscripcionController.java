@@ -22,6 +22,7 @@ public class InscripcionController {
     }
     // DELETE: Eliminar una inscripción por ID, devuelve 204 No Content si se eliminó, false si no existe
     @DeleteMapping("/{id}") public ResponseEntity<Void> delete(@PathVariable Long id) {
-        return service.eliminar(id) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+        service.eliminar(id);
+        return ResponseEntity.noContent().build();
     }
 }

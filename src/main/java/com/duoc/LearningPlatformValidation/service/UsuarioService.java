@@ -1,12 +1,12 @@
 package com.duoc.LearningPlatformValidation.service;
 import com.duoc.LearningPlatformValidation.dto.usuario.*;
+import com.duoc.LearningPlatformValidation.exception.ResourceNotFoundException;
 import com.duoc.LearningPlatformValidation.mapper.UsuarioMapper;
 import com.duoc.LearningPlatformValidation.model.UsuarioEntity;
 import com.duoc.LearningPlatformValidation.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,8 +20,10 @@ public class UsuarioService {
     }
 
     // GET: Obtener un usuario por ID, devuelve Optional.empty() si no existe
-    public Optional<UsuarioResponse> obtenerPorId(Long id) {
-        return repository.findById(id).map(mapper::toResponse);
+    public UsuarioResponse obtenerPorId(Long id) {
+        UsuarioEntity entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + id));
+        return mapper.toResponse(entity);
     }
 
     // POST: Crear un nuevo usuario, devuelve el usuario creado con ID
@@ -30,18 +32,22 @@ public class UsuarioService {
     }
 
     // PUT: Actualizar un usuario por ID, devuelve Optional.empty() si no existe
-    public Optional<UsuarioResponse> actualizar(Long id, UsuarioRequest request) {
-        return repository.findById(id).map(u -> {
-            u.setNombre(request.getNombre());
-            u.setCorreo(request.getCorreo());
-            if(request.getContrasena() != null && !request.getContrasena().isEmpty()) { u.setContrasena(request.getContrasena()); }
-            u.setRol(request.getRol());
-            return mapper.toResponse(repository.save(u));
-        });
+    public UsuarioResponse actualizar(Long id, UsuarioRequest request) {
+        UsuarioEntity entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + id));
+        entity.setNombre(request.getNombre());
+        entity.setCorreo(request.getCorreo());
+        if (request.getContrasena() != null && !request.getContrasena().isEmpty()) {
+            entity.setContrasena(request.getContrasena());
+        }
+        entity.setRol(request.getRol());
+        return mapper.toResponse(repository.save(entity));
     }
     // DELETE: Eliminar un usuario por ID, devuelve true si se eliminó, false si no existe
-    public boolean eliminar(Long id) {
-        if (repository.existsById(id)) { repository.deleteById(id); return true; }
-        return false;
+    public void eliminar(Long id) {
+        if (!repository.existsById(id)) {
+            throw new ResourceNotFoundException("Usuario no encontrado: " + id);
+        }
+        repository.deleteById(id);
     }
 }
